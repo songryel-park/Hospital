@@ -34,7 +34,6 @@ data class SignupRequest(
             "ADMIN" -> UserRole.ADMIN
             "CLIENT" -> UserRole.CLIENT
             else -> throw BadRequestException("잘못된 권한입니다.")
-        },
-        account = account
+        }
     )
 }
