@@ -1,6 +1,11 @@
 package org.example.animalhospital.exception
 
-class ErrorResponse(message: String): BaseException() {
-    override var code: ResultCode = ResultCode.ERROR
-    override var message: String = message
-}
+import lombok.Getter
+import lombok.Setter
+
+@Getter
+@Setter
+data class ErrorResponse(
+    var code: ResultCode? = null,
+    var message: String? = null
+)
