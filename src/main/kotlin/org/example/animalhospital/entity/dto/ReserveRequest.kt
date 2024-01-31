@@ -23,39 +23,31 @@ data class ReserveRequest(
     @JsonProperty("pet")
     var petId: Long,
 
-    @field:NotNull
+    @field:NotBlank
     @JsonProperty("disease")
     var disease: String,
 
-    @field:NotNull
+    @field:NotBlank
     @JsonProperty("reserve_date")
     var reserveDate: String,
 
     @field:NotNull
-    var createAt: LocalDateTime,
+    var createdAt: LocalDateTime,
 
     @field:NotNull
-    var updateAt: LocalDateTime,
+    var updatedAt: LocalDateTime,
 
     @field:NotNull
     @JsonProperty("reservation")
     var status: ReserveStatus,
 
-    @field:NotNull
-    var price: Long
+    var totalPrice: Long
 ) {
-    fun processPayment(price: Long, userId: Long): Boolean {
-        return true
-    }
-
     fun cancel() {
-        if (status != ReserveStatus.TREATMENT_WAITING ||
-            status != ReserveStatus.TREATMENT_BEING ||
-            status != ReserveStatus.COMPLETED) {
-            this.status = ReserveStatus.CANCEL
-        } else {
+        if (this.status != ReserveStatus.RESERVED) {
             throw BadRequestException("결제를 취소할 수 없습니다.")
         }
+        this.status = ReserveStatus.CANCEL
     }
 
     companion object {
@@ -66,10 +58,10 @@ data class ReserveRequest(
                 petId = reserve.petId,
                 disease = reserve.disease,
                 reserveDate = reserve.reserveDate,
-                createAt = reserve.createAt,
-                updateAt = reserve.updateAt,
+                createdAt = reserve.createdAt,
+                updatedAt = reserve.updatedAt,
                 status = reserve.status,
-                price = reserve.price
+                totalPrice = reserve.totalPrice
             )
         }
     }

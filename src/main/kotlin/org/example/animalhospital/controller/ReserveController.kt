@@ -43,33 +43,34 @@ class ReserveController(private val reserveService: ReserveService) {
 
     @PreAuthorize("hasAnyAuthority('CLIENT')")
     @PostMapping("/reservations")
-    fun createReservation(@Valid @RequestBody request: ReserveRequest): ResponseEntity<String> {
-        reserveService.create(request)
+    fun createReservation(@AuthenticationPrincipal user: User, @PathVariable userId: Long,
+                          @Valid @RequestBody request: ReserveRequest): ResponseEntity<String> {
+        reserveService.create(userId, request)
         return ResponseEntity("예약되었습니다.", HttpStatus.OK)
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT')")
     @PutMapping("/reservations/{reservationId}")
-    fun updateReservation(@AuthenticationPrincipal user: User, @PathVariable reserveId: Long,
+    fun updateReservation(@AuthenticationPrincipal userId: Long, @PathVariable reserveId: Long,
                         @Valid @RequestBody request: ReserveRequest): ResponseEntity<String> {
         if (reserveId != request.reserveId!!) {
             throw BadRequestException("수정하려는 예약이 아닙니다.")
         }
-        reserveService.update(request)
+        reserveService.update(userId, request)
         return ResponseEntity("예약내용이 수정되었습니다", HttpStatus.OK)
     }
 
     @DeleteMapping("/reservations/{reservationId}")
-    fun cancelReservation(@AuthenticationPrincipal user: User,
-                          @Valid @PathVariable reserveId: Long): ResponseEntity<Unit> {
-        reserveService.cancel(reserveId)
+    fun cancelReservation(@AuthenticationPrincipal user: User, @PathVariable reserveId: Long,
+                          @Valid @RequestBody request: ReserveRequest): ResponseEntity<Unit> {
+        reserveService.cancel(reserveId, request)
         return ResponseEntity.noContent().build()
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PatchMapping("/reservations/{reservationId}")
     fun editReservation(@AuthenticationPrincipal user: User,
-                          @Valid @PathVariable request: ReserveRequest): ResponseEntity<ReserveRequest> {
+                        @Valid @PathVariable request: ReserveRequest): ResponseEntity<ReserveRequest> {
         reserveService.edit(request)
         return ResponseEntity.ok(request)
     }

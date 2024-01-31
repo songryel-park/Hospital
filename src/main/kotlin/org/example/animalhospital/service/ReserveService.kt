@@ -32,8 +32,8 @@ class ReserveService(
         return ReserveRequest.fromEntity(reservation)
     }
 
-    fun create(request: ReserveRequest): Reserve {
-        val user: User = userRepository.findById(request.userId)
+    fun create(userId: Long, request: ReserveRequest): Reserve {
+        val user: User = userRepository.findById(userId)
             .orElseThrow { NotFoundException("존재하지 않는 계정입니다.") }
         user.checkClientOrThrow()
         val reservation = Reserve(
@@ -41,30 +41,28 @@ class ReserveService(
             petId = request.petId,
             disease = request.disease,
             reserveDate = request.reserveDate,
-            createAt = request.createAt,
-            updateAt = request.updateAt,
+            createdAt = request.createdAt,
+            updatedAt = request.updatedAt,
             status = ReserveStatus.RESERVATION,
-            price = 50000
+            totalPrice = request.totalPrice
         )
         return reserveRepository.save(reservation)
     }
 
-    fun update(request: ReserveRequest): Reserve {
-        val user: User = userRepository.findById(request.userId)
+    fun update(userId: Long, request: ReserveRequest): Reserve {
+        val user: User = userRepository.findById(userId)
             .orElseThrow { NotFoundException("존재하지 않는 계정입니다.") }
         user.checkClientOrThrow()
         val reservation = reserveRepository.findById(request.reserveId!!)
             .orElseThrow { NotFoundException("잘못된 예약번호 입니다.") }
-        reservation.apply {
-            request.reserveDate?.let { reserveDate = it }
-            request.updateAt?.let { updateAt = it }
-        }
+        reservation.reserveDate = request.reserveDate
         return reserveRepository.save(reservation)
     }
 
-    fun cancel(reserveId: Long) {
+    fun cancel(reserveId: Long, request: ReserveRequest) {
         val reservation = reserveRepository.findById(reserveId)
             .orElseThrow { throw NotFoundException("잘못된 예약번호 입니다.") }
+        request.cancel()
         return reserveRepository.delete(reservation)
     }
 

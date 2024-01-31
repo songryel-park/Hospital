@@ -28,16 +28,16 @@ class Reserve(
     @Column(name = "reserve_date")
     var reserveDate: String,
 
-    @Column(name = "reserve_create")
-    val createAt: LocalDateTime,
+    @Column(name = "created")
+    override var createdAt: LocalDateTime,
 
-    @Column(name = "reserve_update")
-    var updateAt: LocalDateTime,
+    @Column(name = "updated")
+    override var updatedAt: LocalDateTime,
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     var status: ReserveStatus,
 
-    @Column(name = "price")
-    val price: Long = 50000
+    @Column(name = "total_price")
+    val totalPrice: Long
 ): Timestemped()
