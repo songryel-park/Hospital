@@ -10,6 +10,7 @@ import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.exception.BadRequestException
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
+import java.time.LocalDateTime
 
 data class ReserveRequest(
     var reserveId: Long?,
@@ -23,44 +24,53 @@ data class ReserveRequest(
     var petId: Long,
 
     @field:NotNull
-    var createAt: CreatedDate,
-
-    @field:NotNull
-    var updateAt: LastModifiedDate,
-
-    @field:NotNull
-    @JsonProperty("reservation")
-    var status: String,
-
-    @field:NotNull
     @JsonProperty("disease")
     var disease: String,
 
-    @field:NotBlank
-    val price: Long
+    @field:NotNull
+    @JsonProperty("reserve_date")
+    var reserveDate: String,
+
+    @field:NotNull
+    var createAt: LocalDateTime,
+
+    @field:NotNull
+    var updateAt: LocalDateTime,
+
+    @field:NotNull
+    @JsonProperty("reservation")
+    var status: ReserveStatus,
+
+    @field:NotNull
+    var price: Long
 ) {
-    val reservation = Reserve(
-        userId = userId,
-        petId = petId,
-        createAt = createAt,
-        updateAt = updateAt,
-        status = when(status) {
-            "Reservation" -> ReserveStatus.RESERVATION
-            "Payment" -> ReserveStatus.PAYMENT_WAITING
-            "Reserved" -> ReserveStatus.RESERVED
-            "Waiting" -> ReserveStatus.TREATMENT_WAITING
-            "Treatment" -> ReserveStatus.TREATMENT_BEING
-            "Completed" -> ReserveStatus.COMPLETED
-            "Cancel" -> ReserveStatus.CANCEL
-            else -> throw BadRequestException("예약된 내용이 없습니다.")
-        },
-        disease = disease
-    )
-
-    fun toCreate(): Reserve = Reserve(
-        reserveId, userId, petId, createAt, updateAt, status = ReserveStatus.RESERVATION, disease, price)
-
     fun processPayment(price: Long, userId: Long): Boolean {
         return true
+    }
+
+    fun cancel() {
+        if (status != ReserveStatus.TREATMENT_WAITING ||
+            status != ReserveStatus.TREATMENT_BEING ||
+            status != ReserveStatus.COMPLETED) {
+            this.status = ReserveStatus.CANCEL
+        } else {
+            throw BadRequestException("결제를 취소할 수 없습니다.")
+        }
+    }
+
+    companion object {
+        fun fromEntity(reserve: Reserve): ReserveRequest {
+            return ReserveRequest(
+                reserveId = reserve.reserveId,
+                userId = reserve.userId,
+                petId = reserve.petId,
+                disease = reserve.disease,
+                reserveDate = reserve.reserveDate,
+                createAt = reserve.createAt,
+                updateAt = reserve.updateAt,
+                status = reserve.status,
+                price = reserve.price
+            )
+        }
     }
 }
