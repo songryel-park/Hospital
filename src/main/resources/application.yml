@@ -46,3 +46,8 @@ jwt:
   secret-key:
   expiration-hours: 24
   issuer:
+
+paypal:
+  baseUrl: https://sandbox.paypal.com
+  clientId:
+  clientSecret:
