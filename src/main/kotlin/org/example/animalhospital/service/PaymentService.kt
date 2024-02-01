@@ -1,13 +1,14 @@
 package org.example.animalhospital.service
 
+import org.example.animalhospital.entity.Payment
 import org.example.animalhospital.entity.dto.PaymentRequest
 import org.example.animalhospital.entity.enums.ReserveStatus
-import org.example.animalhospital.exception.BadRequestException
 import org.example.animalhospital.exception.NotFoundException
 import org.example.animalhospital.payment.PaymentGateway
 import org.example.animalhospital.repository.PaymentRepository
 import org.example.animalhospital.repository.ReserveRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PaymentService(
@@ -15,25 +16,19 @@ class PaymentService(
     private val paymentGateway: PaymentGateway,
     private val reserveRepository: ReserveRepository
 ) {
+    @Transactional
     fun payment(request: PaymentRequest) {
         val reservation = reserveRepository.findById(request.reserveId)
-        if (reservation.status == ReserveStatus.COMPLETED) {
-            throw IllegalStateException("진료를 완료했습니다.")
-        }
-        reservation.status = ReserveStatus.PAYMENT_WAITING
-        reserveRepository.save(reservation)
-
-        try {
-            paymentGateway.processPayment(request.paymentInfo)
-        } catch (e: BadRequestException) {
-            reservation.status = ReserveStatus.PAYMENT_WAITING
-            reserveRepository.save(reservation)
-            throw e
+            .orElseThrow { NotFoundException("해당 예약을 찾을 수 없습니다.") }
+        if (reservation.status != ReserveStatus.PAYMENT_WAITING) {
+            throw IllegalStateException("결제 대기 상태가 아닙니다.")
         }
 
-        val payment = PaymentRequest(
+        paymentGateway.processPayment(request.paymentInfo)
+
+        val payment = Payment(
             reserveId = request.reserveId,
-            paymentInfo = request.paymentInfo,
+            walletId = request.walletId,
         )
         paymentRepository.save(payment)
     }

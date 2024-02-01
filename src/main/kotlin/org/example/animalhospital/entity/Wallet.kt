@@ -16,15 +16,15 @@ class Wallet(
     @JoinColumn(name = "user_id", nullable = false)
     val userId: Long,
 
-    @Column(name = "name")
-    val name: String,
-
     @Enumerated(value = EnumType.STRING)
     @Column(name = "payment_type")
     val paymentType: PaymentType,
 
     @Column(name = "company")
     val company: String,
+
+    @Column(name = "name")
+    val name: String,
 
     @Column(name = "number")
     val number: String,

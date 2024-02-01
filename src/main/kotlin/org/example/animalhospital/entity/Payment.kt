@@ -15,8 +15,6 @@ class Payment(
 
     @JoinColumn(name = "wallet_id", nullable = false)
     val walletId: Long,
-
-    @Column(name = "payment_time")
-    override var createdAt: LocalDateTime,
 ): Timestemped() {
+
 }

@@ -12,4 +12,5 @@ import java.time.LocalDateTime
 data class PaymentRequest(
     var reserveId: Long,
     var paymentInfo: PaymentInfo,
+    var walletId: Long
 )
