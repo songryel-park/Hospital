@@ -28,16 +28,17 @@ class Reserve(
     @Column(name = "reserve_date")
     var reserveDate: String,
 
-    @Column(name = "created")
-    override var createdAt: LocalDateTime,
-
-    @Column(name = "updated")
-    override var updatedAt: LocalDateTime,
-
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)
     var status: ReserveStatus,
 
     @Column(name = "total_price")
-    val totalPrice: Long
-): Timestemped()
+    val price: Long
+): Timestemped() {
+    fun cancel() {
+        if (this.status != ReserveStatus.RESERVED) {
+            throw BadRequestException("결제를 취소할 수 없습니다.")
+        }
+        this.status = ReserveStatus.CANCEL
+    }
+}

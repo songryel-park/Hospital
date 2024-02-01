@@ -4,12 +4,9 @@ import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
 import org.example.animalhospital.entity.User
 import org.example.animalhospital.entity.dto.ReserveRequest
-import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.exception.BadRequestException
-import org.example.animalhospital.service.PaymentService
 import org.example.animalhospital.service.ReserveService
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -61,17 +58,19 @@ class ReserveController(private val reserveService: ReserveService) {
     }
 
     @DeleteMapping("/reservations/{reservationId}")
-    fun cancelReservation(@AuthenticationPrincipal user: User, @PathVariable reserveId: Long,
-                          @Valid @RequestBody request: ReserveRequest): ResponseEntity<Unit> {
-        reserveService.cancel(reserveId, request)
+    fun cancelReservation(
+        @AuthenticationPrincipal user: User,
+        @PathVariable reserveId: Long
+    ): ResponseEntity<Unit> {
+        reserveService.cancel(reserveId)
         return ResponseEntity.noContent().build()
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PatchMapping("/reservations/{reservationId}")
-    fun editReservation(@AuthenticationPrincipal user: User,
+    fun treatment(@AuthenticationPrincipal user: User, @PathVariable userId: Long,
                         @Valid @PathVariable request: ReserveRequest): ResponseEntity<ReserveRequest> {
-        reserveService.edit(request)
+        reserveService.complete(userId, request)
         return ResponseEntity.ok(request)
     }
 }

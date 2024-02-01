@@ -41,15 +41,8 @@ data class ReserveRequest(
     @JsonProperty("reservation")
     var status: ReserveStatus,
 
-    var totalPrice: Long
+    var price: Long
 ) {
-    fun cancel() {
-        if (this.status != ReserveStatus.RESERVED) {
-            throw BadRequestException("결제를 취소할 수 없습니다.")
-        }
-        this.status = ReserveStatus.CANCEL
-    }
-
     companion object {
         fun fromEntity(reserve: Reserve): ReserveRequest {
             return ReserveRequest(
@@ -61,7 +54,7 @@ data class ReserveRequest(
                 createdAt = reserve.createdAt,
                 updatedAt = reserve.updatedAt,
                 status = reserve.status,
-                totalPrice = reserve.totalPrice
+                price = reserve.price
             )
         }
     }
