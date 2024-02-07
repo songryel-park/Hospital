@@ -17,6 +17,7 @@ java {
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") } // 아이엠포트 라이브러리 저장소
 }
 
 dependencies {
@@ -54,6 +55,9 @@ dependencies {
 
     // paypal 연동
     implementation("com.paypal.sdk:rest-api-sdk:1.14.0")
+
+    // iamport 결제연동
+    implementation("com.github.iamport:iamport-rest-client-java:0.2.21")
 }
 
 allOpen {

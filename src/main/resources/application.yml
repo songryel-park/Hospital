@@ -48,6 +48,10 @@ jwt:
   issuer:
 
 paypal:
-  baseUrl: https://sandbox.paypal.com
+  baseUrl: https://api-m.sandbox.paypal.com
   clientId:
   clientSecret:
+
+iamport:
+  imp_key:
+  imp_secret:

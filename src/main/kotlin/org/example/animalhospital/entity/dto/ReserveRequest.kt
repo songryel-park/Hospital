@@ -3,13 +3,8 @@ package org.example.animalhospital.entity.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import org.example.animalhospital.entity.Pet
 import org.example.animalhospital.entity.Reserve
-import org.example.animalhospital.entity.User
 import org.example.animalhospital.entity.enums.ReserveStatus
-import org.example.animalhospital.exception.BadRequestException
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 
 data class ReserveRequest(

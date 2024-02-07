@@ -1,10 +1,9 @@
 package org.example.animalhospital.entity
 
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
-@Table(name = "payments")
+@Table(name = "payment")
 class Payment(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +14,4 @@ class Payment(
 
     @JoinColumn(name = "wallet_id", nullable = false)
     val walletId: Long,
-): Timestemped() {
-
-}
+): Timestemped()
