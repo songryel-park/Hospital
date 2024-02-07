@@ -22,10 +22,6 @@ data class SignupRequest(
     @field:NotBlank
     @JsonProperty("user_role")
     var role: String,
-
-    @field:NotBlank
-    @JsonProperty("account")
-    var account: String
 ) {
     val user = User(
         username = username,
