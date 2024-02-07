@@ -3,6 +3,7 @@ package org.example.animalhospital.service
 import org.example.animalhospital.entity.enums.PaymentType
 import org.example.animalhospital.exception.*
 import org.example.animalhospital.payment.*
+import org.example.animalhospital.paypal.PayPalApi
 import org.springframework.stereotype.Service
 
 @Service
@@ -36,9 +37,9 @@ class PayPalPaymentGateway(val paypalApi: PayPalApi) : PaymentGateway {
 //        try {
 //            val paymentResult = paypalApi.accountPayment(bankInfo)
 //        } catch () {
-//            throw ("rurfwp")
+//            throw ("")
 //        } catch(ServerEx) {
-//            throw waktlgn
+//            throw
 //        }
 //    }
 }
