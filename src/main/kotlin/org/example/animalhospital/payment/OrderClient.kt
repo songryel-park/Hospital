@@ -15,10 +15,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Component
 class OrderClient(
-    private val restTemplate: RestTemplate,
-    @Value("\${portone.api.url}") private val apiUrl: String,
-    @Value("\${portone.api.key}") private val apiKey: String,
+    @Value("\${iamport.api.url}") private val apiUrl: String,
+    @Value("\${iamport.api.key}") private val apiKey: String,
 ) {
+    private val restTemplate: RestTemplate = RestTemplate()
+
     fun processPayment(request: PaymentRequest): ResponseEntity<*> {
         val headers = HttpHeaders()
         headers.set("Authorization", "Bearer $apiKey")

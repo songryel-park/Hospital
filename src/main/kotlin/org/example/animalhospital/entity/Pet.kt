@@ -26,8 +26,8 @@ data class Pet(
     @Column(name = "weight", nullable = false)
     val weight : Long,
 
-    @Column(name = "category")
-    val category : String,
+    @Column(name = "variety")
+    val variety : String,
 
     @Column(name = "gender", nullable = false)
     val gender : Boolean,
