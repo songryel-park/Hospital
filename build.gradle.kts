@@ -58,6 +58,15 @@ dependencies {
 
     // iamport 결제연동
     implementation("com.github.iamport:iamport-rest-client-java:0.2.21")
+
+    // Spring Batch
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-batch
+    implementation("org.springframework.boot:spring-boot-starter-batch:3.2.2")
+
+    // https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-core
+    implementation("org.springframework.batch:spring-batch-core:5.1.0")
+
+    testImplementation("org.springframework.batch:spring-batch-test:4.3.3")
 }
 
 allOpen {
