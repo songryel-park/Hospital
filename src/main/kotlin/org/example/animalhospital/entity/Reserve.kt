@@ -26,7 +26,7 @@ class Reserve(
     val disease : String,
 
     @Column(name = "reserve_date")
-    var reserveDate: String,
+    var reserveDate: LocalDateTime,
 
     @Column(name = "status")
     @Enumerated(value = EnumType.STRING)

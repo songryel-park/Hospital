@@ -24,7 +24,7 @@ data class ReserveRequest(
 
     @field:NotBlank
     @JsonProperty("reserve_date")
-    var reserveDate: String,
+    var reserveDate: LocalDateTime,
 
     @field:NotNull
     var createdAt: LocalDateTime,

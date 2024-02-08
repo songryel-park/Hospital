@@ -7,6 +7,7 @@ import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.exception.NotFoundException
 import org.example.animalhospital.repository.ReserveRepository
 import org.example.animalhospital.repository.UserRepository
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,12 +17,12 @@ class ReserveService(
     private val reserveRepository: ReserveRepository,
     private val userRepository: UserRepository
 ) {
-    fun getAll(pageable: Pageable): List<ReserveRequest> {
-        val allReservation = reserveRepository.getAll(pageable)
+    fun findAll(pageable: Pageable): Page<Reserve> {
+        val allReservation = reserveRepository.findAll(pageable)
         return allReservation
     }
 
-    fun find(pageable: Pageable, userId: Long): MutableList<ReserveRequest> {
+    fun find(pageable: Pageable, userId: Long): MutableList<Reserve> {
         val myReservation = reserveRepository.findReservationByUserId(pageable, userId)
         return myReservation
     }

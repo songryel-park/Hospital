@@ -2,10 +2,12 @@ package org.example.animalhospital.controller
 
 import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
+import org.example.animalhospital.entity.Reserve
 import org.example.animalhospital.entity.User
 import org.example.animalhospital.entity.dto.ReserveRequest
 import org.example.animalhospital.exception.BadRequestException
 import org.example.animalhospital.service.ReserveService
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -19,15 +21,15 @@ import org.springframework.web.bind.annotation.*
 class ReserveController(private val reserveService: ReserveService) {
     @GetMapping("/reservations")
     fun getAllReservation(@RequestParam(defaultValue = "0") page: Int,
-                          @RequestParam(defaultValue = "10") size: Int): ResponseEntity<List<ReserveRequest>> {
-        val getAll = reserveService.getAll(PageRequest.of(page, size))
+                          @RequestParam(defaultValue = "10") size: Int): ResponseEntity<Page<Reserve>> {
+        val getAll = reserveService.findAll(PageRequest.of(page, size))
         return ResponseEntity.ok(getAll)
     }
 
     @GetMapping("/reservations/{userId}")
     fun findReservation(@RequestParam(defaultValue = "0") page: Int,
                         @RequestParam(defaultValue = "10") size: Int,
-                        @PathVariable userId: Long): ResponseEntity<List<ReserveRequest>> {
+                        @PathVariable userId: Long): ResponseEntity<List<Reserve>> {
         val find = reserveService.find(PageRequest.of(page, size), userId)
         return ResponseEntity.ok(find)
     }
