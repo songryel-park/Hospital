@@ -1,6 +1,5 @@
 package org.example.animalhospital.service
 
-import com.paypal.base.exception.BaseException
 import com.siot.IamportRestClient.IamportClient
 import org.example.animalhospital.entity.Payment
 import org.example.animalhospital.entity.dto.BillingRequest
@@ -8,22 +7,20 @@ import org.example.animalhospital.entity.dto.PaymentRequest
 import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.exception.NotFoundException
 import org.example.animalhospital.payment.OrderClient
-import org.example.animalhospital.payment.PaymentGateway
 import org.example.animalhospital.repository.PaymentRepository
 import org.example.animalhospital.repository.ReserveRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 
 @Service
 class PaymentService(
     private val paymentRepository: PaymentRepository,
-    private val paymentGateway: PaymentGateway,
     private val orderClient: OrderClient,
     private val reserveRepository: ReserveRepository,
-    private val iamportClient: IamportClient = IamportClient("{API_KEY}", "{API_SECRET}")
 ) {
+    private val iamportClient: IamportClient = IamportClient("{API_KEY}", "{API_SECRET}")
+
     @Transactional
     fun payment(request: PaymentRequest) {
         val reservation = reserveRepository.findById(request.reserveId)
@@ -32,7 +29,8 @@ class PaymentService(
             throw IllegalStateException("결제 대기 상태가 아닙니다.")
         }
 
-        paymentGateway.processPayment(request.paymentInfo)
+        // IAMPORT 결제 요청 로직
+//        paymentGateway.processPayment(request.paymentInfo)
         orderClient.processPayment(request)
 
         val payment = Payment(

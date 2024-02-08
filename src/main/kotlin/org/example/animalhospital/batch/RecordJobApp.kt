@@ -15,25 +15,20 @@ import org.springframework.batch.core.step.builder.StepBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor
-import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.transaction.PlatformTransactionManager
 
 
 @Configuration
 @EnableBatchProcessing
-@EnableScheduling
 class RecordJobApp(
-//    private val jobBuilderFactory: JobBuilderFactory,
-//    private val stepBuilderFactory: StepBuilderFactory,
-    private val reserveRecordReader: ReserveRecordReader,
-    private val reserveRecordProcessor: ReserveRecordProcessor,
-    private val reserveRecordWriter: ReserveRecordWriter,
-    private val jobLauncher: JobLauncher
+    private val recordReader: ReserveRecordReader,
+//    private val recordProcessor: ReserveRecordProcessor,
+    private val recordWriter: ReserveRecordWriter,
 ): DefaultBatchConfiguration() {
     private val log = LoggerFactory.getLogger(RecordJobApp::class.java)
 
-    @Bean
+    @Bean("ReserveRetentionJob")
     fun reserveRetentionJob(jobRepository: JobRepository): Job {
         return JobBuilder("reserveRetentionJob", jobRepository)
             .incrementer(RunIdIncrementer())
@@ -45,15 +40,16 @@ class RecordJobApp(
     fun dataRetentionStep(jobRepository: JobRepository,
                           transactionManager: PlatformTransactionManager): Step {
         return StepBuilder("dataRetentionStep", jobRepository)
-            .chunk<Reserve, Reserve>(100, transactionManager)
-            .reader(reserveRecordReader)
-            .processor(reserveRecordProcessor)
-            .writer(reserveRecordWriter)
+            .allowStartIfComplete(true)
+            .chunk<Reserve?, Reserve>(100, transactionManager)
+            .reader(recordReader)
+//            .processor(recordProcessor)
+            .writer(recordWriter)
             .build()
     }
 
     @Bean
-    @Scheduled(cron = "0 0 4 * * *")
+    @Scheduled(cron = "0 0 4 * * *")  // 매일 오전 4시 작업
     override fun jobLauncher(): JobLauncher {
         val jobLauncher = TaskExecutorJobLauncher()
         jobLauncher.setJobRepository(jobRepository())

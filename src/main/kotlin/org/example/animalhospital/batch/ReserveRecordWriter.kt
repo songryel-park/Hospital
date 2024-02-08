@@ -11,16 +11,17 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Component
-class ReserveRecordWriter (private val repository: ReserveRepository): ItemWriter<Reserve> {
-
+class ReserveRecordWriter (private val repository: ReserveRepository): ItemWriter<Reserve?> {
 //    private var currentIndex = 0
 
-    override fun write(chunk: Chunk<out Reserve>) {
+    override fun write(chunk: Chunk<out Reserve?>) {
 //        if (chunk.items.isNotEmpty()) {
 //            repository.delete(chunk.items[currentIndex])
 //        }
         for (reserve in chunk.items) {
-            repository.delete(reserve)
+            if (reserve != null) {
+                repository.delete(reserve)
+            }
         }
     }
 }
