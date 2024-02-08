@@ -18,7 +18,7 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) {
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
-                it.requestMatchers("/login", "/signup", "/h2-console/**").permitAll()
+                it.requestMatchers("/login", "/signup", "/h2-console/**", "/jobLauncher.html").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(
