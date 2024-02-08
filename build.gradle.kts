@@ -53,6 +53,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
+
+    implementation("com.mysql:mysql-connector-j:8.0.33")
+
+
     // paypal 연동
     implementation("com.paypal.sdk:rest-api-sdk:1.14.0")
 
