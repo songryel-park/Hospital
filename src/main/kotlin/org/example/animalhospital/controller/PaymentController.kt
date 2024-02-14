@@ -20,6 +20,12 @@ class PaymentController(private val paymentService: PaymentService) {
         return ResponseEntity("결제가 완료되었습니다.", HttpStatus.OK)
     }
 
+    @PostMapping("/payment/{paymentId}")
+    fun refund(@PathVariable paymentId: String, @RequestBody request: PaymentRequest): ResponseEntity<String> {
+        paymentService.refund(request)
+        return ResponseEntity("환불처리 되었습니다.", HttpStatus.OK)
+    }
+
     @PostMapping("/verify/{imp_uid}")
     fun issueBilling(@PathVariable("imp_uid") impUid: String, @RequestBody request: BillingRequest): Response<Any> {
         try {
@@ -29,7 +35,4 @@ class PaymentController(private val paymentService: PaymentService) {
             return Response(message = exception.message)
         }
     }
-
-//    @PostMapping("/payment/{paymentId}")
-//    fun refund(@RequestBody request: PaymentRequest) {}
 }

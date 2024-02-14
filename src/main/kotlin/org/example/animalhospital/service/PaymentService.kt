@@ -40,6 +40,23 @@ class PaymentService(
         paymentRepository.save(payment)
     }
 
+    @Transactional
+    fun refund(request: PaymentRequest) {
+        val reservation = reserveRepository.findById(request.reserveId)
+            .orElseThrow { NotFoundException("해당 예약을 찾을 수 없습니다.") }
+        if (reservation.status != ReserveStatus.COMPLETED) {
+            throw IllegalStateException("결제 완료 상태가 아닙니다.")
+        }
+
+        orderClient.processPayment(request)
+
+        val refund = Payment(
+            reserveId = request.reserveId,
+            walletId = request.walletId
+        )
+        paymentRepository.save(refund)
+    }
+
     fun issueBilling(issueBilling: BillingRequest, impUid: String) {
         iamportClient.paymentByImpUid(impUid)
 
