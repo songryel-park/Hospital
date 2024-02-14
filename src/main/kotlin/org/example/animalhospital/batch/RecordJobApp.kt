@@ -27,6 +27,7 @@ class RecordJobApp(
     private val recordWriter: RecordWriter,
 ): DefaultBatchConfiguration() {
     private val log = LoggerFactory.getLogger(RecordJobApp::class.java)
+//    private lateinit var recordJobLauncher: TaskExecutorJobLauncher
 
     @Bean("ReserveRetentionJob")
     fun reserveRetentionJob(jobRepository: JobRepository): Job {
@@ -50,7 +51,7 @@ class RecordJobApp(
 
     @Bean
     @Scheduled(cron = "0 0 4 * * *")  // 매일 오전 4시 작업
-    override fun jobLauncher(): JobLauncher {
+    fun recordJobLauncher(): JobLauncher {
         val jobLauncher = TaskExecutorJobLauncher()
         jobLauncher.setJobRepository(jobRepository())
         jobLauncher.setTaskExecutor(SimpleAsyncTaskExecutor())
