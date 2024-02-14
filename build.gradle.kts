@@ -26,6 +26,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter-logging")
@@ -53,9 +54,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
-
     implementation("com.mysql:mysql-connector-j:8.0.33")
-
 
     // paypal 연동
     implementation("com.paypal.sdk:rest-api-sdk:1.14.0")
@@ -64,12 +63,8 @@ dependencies {
     implementation("com.github.iamport:iamport-rest-client-java:0.2.21")
 
     // Spring Batch
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-batch
     implementation("org.springframework.boot:spring-boot-starter-batch:3.2.2")
-
-    // https://mvnrepository.com/artifact/org.springframework.batch/spring-batch-core
     implementation("org.springframework.batch:spring-batch-core:5.1.0")
-
     testImplementation("org.springframework.batch:spring-batch-test:4.3.3")
 }
 
