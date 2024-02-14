@@ -1,6 +1,5 @@
 package org.example.animalhospital
 
-import org.hibernate.annotations.processing.SQL
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
