@@ -45,7 +45,7 @@ class PaymentService(
         val reservation = reserveRepository.findById(request.reserveId)
             .orElseThrow { NotFoundException("해당 예약을 찾을 수 없습니다.") }
         if (reservation.status != ReserveStatus.COMPLETED) {
-            throw IllegalStateException("결제 완료 상태가 아닙니다.")
+            throw IllegalStateException("아직 결제를 하지 않았습니다.")
         }
 
         orderClient.processPayment(request)
