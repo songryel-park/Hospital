@@ -22,9 +22,9 @@ import org.springframework.transaction.PlatformTransactionManager
 @Configuration
 @EnableBatchProcessing
 class RecordJobApp(
-    private val recordReader: ReserveRecordReader,
-//    private val recordProcessor: ReserveRecordProcessor,
-    private val recordWriter: ReserveRecordWriter,
+    private val recordReader: RecordReader,
+//    private val recordProcessor: RecordProcessor,
+    private val recordWriter: RecordWriter,
 ): DefaultBatchConfiguration() {
     private val log = LoggerFactory.getLogger(RecordJobApp::class.java)
 

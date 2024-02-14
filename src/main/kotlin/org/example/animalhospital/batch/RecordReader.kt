@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 
 @Component
-class ReserveRecordReader(private val repository: ReserveRepository): ItemReader<Reserve> {
+class RecordReader(private val repository: ReserveRepository): ItemReader<Reserve> {
     private var currentIndex = 0
 
     override fun read(): Reserve? {

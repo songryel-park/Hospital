@@ -1,17 +1,13 @@
 package org.example.animalhospital.batch
 
 import org.example.animalhospital.entity.Reserve
-import org.example.animalhospital.entity.dto.ReserveRequest
 import org.example.animalhospital.repository.ReserveRepository
 import org.springframework.batch.item.Chunk
 import org.springframework.batch.item.ItemWriter
 import org.springframework.stereotype.Component
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 @Component
-class ReserveRecordWriter (private val repository: ReserveRepository): ItemWriter<Reserve?> {
+class RecordWriter (private val repository: ReserveRepository): ItemWriter<Reserve?> {
 //    private var currentIndex = 0
 
     override fun write(chunk: Chunk<out Reserve?>) {
