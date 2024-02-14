@@ -1,6 +1,7 @@
 package org.example.animalhospital.batch
 
 import org.example.animalhospital.entity.Reserve
+import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.repository.ReserveRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.stereotype.Component
@@ -11,17 +12,12 @@ class StatusReader(private val repository: ReserveRepository): ItemReader<Reserv
     private var currentIndex = 0
 
     override fun read(): Reserve? {
-        val reserveList: List<Reserve> = repository.findByReserveDateBefore(LocalDateTime.now().minusDays(1L))
+        val reserveList: List<Reserve> = repository.findByReserveDateBeforeAndStatus(
+            LocalDateTime.now().plusDays(1L), ReserveStatus.RESERVATION)
         if (reserveList.isEmpty()) {
-            println("진료내역이 없습니다.")
+            println("예약내역이 없습니다.")
             return null
         }
-
-        if (currentIndex < reserveList.size) {
-            val nextReserve = reserveList[currentIndex]
-            currentIndex++
-            return nextReserve
-        }
-        return null
+        return reserveList.getOrNull(currentIndex++)
     }
 }
