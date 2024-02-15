@@ -1,7 +1,6 @@
 package org.example.animalhospital.batch
 
 import org.example.animalhospital.entity.Reserve
-import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.repository.ReserveRepository
 import org.springframework.batch.item.ItemReader
 import org.springframework.stereotype.Component
