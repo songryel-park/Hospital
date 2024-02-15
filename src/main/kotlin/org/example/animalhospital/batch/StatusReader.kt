@@ -12,8 +12,10 @@ class StatusReader(private val repository: ReserveRepository): ItemReader<Reserv
     private var currentIndex = 0
 
     override fun read(): Reserve? {
-        val reserveList: List<Reserve> = repository.findByReserveDateBeforeAndStatus(
-            LocalDateTime.now().plusDays(1L), ReserveStatus.RESERVATION)
+        val start = LocalDateTime.now()
+        val end = LocalDateTime.now().plusDays(1L)
+
+        val reserveList: List<Reserve> = repository.findByReserveDateBetween(start, end)
         if (reserveList.isEmpty()) {
             println("예약내역이 없습니다.")
             return null
