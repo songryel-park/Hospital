@@ -22,10 +22,10 @@ import org.springframework.transaction.PlatformTransactionManager
 @EnableBatchProcessing
 class StatusJobApp(
     private val statusReader: StatusReader,
-    private val statusProcessor: RecordProcessor,
-    private val statusWriter: RecordWriter
+    private val statusProcessor: StatusProcessor,
+    private val statusWriter: StatusWriter
 ): DefaultBatchConfiguration() {
-    private val log = LoggerFactory.getLogger(RecordJobApp::class.java)
+    private val log = LoggerFactory.getLogger(StatusJobApp::class.java)
 
     @Bean("StatusTransferJob")
     fun statusTransferJob(jobRepository: JobRepository): Job {
