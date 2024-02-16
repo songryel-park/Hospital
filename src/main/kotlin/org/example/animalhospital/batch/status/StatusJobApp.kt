@@ -1,8 +1,9 @@
-package org.example.animalhospital.batch
+package org.example.animalhospital.batch.status
 
 import org.example.animalhospital.entity.Reserve
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
+import org.springframework.batch.core.JobParameters
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration
@@ -17,45 +18,51 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.task.SimpleAsyncTaskExecutor
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.transaction.PlatformTransactionManager
-
+import org.springframework.web.bind.annotation.RequestMapping
 
 @Configuration
 @EnableBatchProcessing
-class RecordJobApp(
-    private val recordReader: RecordReader,
-//    private val recordProcessor: RecordProcessor,
-    private val recordWriter: RecordWriter,
+class StatusJobApp(
+    private val statusReader: StatusReader,
+    private val statusProcessor: StatusProcessor,
+    private val statusWriter: StatusWriter
 ): DefaultBatchConfiguration() {
-    private val log = LoggerFactory.getLogger(RecordJobApp::class.java)
-//    private lateinit var recordJobLauncher: TaskExecutorJobLauncher
+    private val log = LoggerFactory.getLogger(StatusJobApp::class.java)
 
-    @Bean("ReserveRetentionJob")
-    fun reserveRetentionJob(jobRepository: JobRepository): Job {
-        return JobBuilder("reserveRetentionJob", jobRepository)
+    @Bean("StatusTransferJob")
+    fun statusTransferJob(jobRepository: JobRepository): Job {
+        return JobBuilder("statusTransferJob", jobRepository)
             .incrementer(RunIdIncrementer())
-            .start(dataRetentionStep(jobRepository, transactionManager))
+            .start(dataTransferStep(jobRepository, transactionManager))
             .build()
     }
 
     @Bean
-    fun dataRetentionStep(jobRepository: JobRepository,
-                          transactionManager: PlatformTransactionManager): Step {
-        return StepBuilder("dataRetentionStep", jobRepository)
+    fun dataTransferStep(
+        jobRepository: JobRepository,
+        transactionManager: PlatformTransactionManager
+    ): Step {
+        return StepBuilder("statusTransferJob", jobRepository)
             .allowStartIfComplete(true)
             .chunk<Reserve?, Reserve>(100, transactionManager)
-            .reader(recordReader)
-//            .processor(recordProcessor)
-            .writer(recordWriter)
+            .reader(statusReader)
+            .processor(statusProcessor)
+            .writer(statusWriter)
             .build()
     }
 
     @Bean
-    @Scheduled(cron = "0 0 4 * * *")  // 매일 오전 4시 작업
-    fun recordJobLauncher(): JobLauncher {
+    fun statusJobLauncher(): JobLauncher {
         val jobLauncher = TaskExecutorJobLauncher()
         jobLauncher.setJobRepository(jobRepository())
         jobLauncher.setTaskExecutor(SimpleAsyncTaskExecutor())
         jobLauncher.afterPropertiesSet()
         return jobLauncher
+    }
+
+    @Scheduled(cron = "0 0 0 * * *")  // 매일 자정 작업
+//    @RequestMapping("/statusJobLauncher.html")
+    fun statusJob() {
+        statusJobLauncher().run(statusTransferJob(jobRepository()), JobParameters())
     }
 }
