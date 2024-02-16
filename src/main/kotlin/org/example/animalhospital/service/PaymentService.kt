@@ -59,7 +59,6 @@ class PaymentService(
 
     fun issueBilling(issueBilling: BillingRequest, impUid: String) {
         iamportClient.paymentByImpUid(impUid)
-
 //        val billingCustomerData = BillingCustomerData(
 //            null,
 //            issueBilling.cardNumber,

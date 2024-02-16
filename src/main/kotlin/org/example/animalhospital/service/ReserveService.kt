@@ -4,6 +4,7 @@ import org.example.animalhospital.entity.Reserve
 import org.example.animalhospital.entity.User
 import org.example.animalhospital.entity.dto.ReserveRequest
 import org.example.animalhospital.entity.enums.ReserveStatus
+import org.example.animalhospital.exception.BadRequestException
 import org.example.animalhospital.exception.NotFoundException
 import org.example.animalhospital.repository.ReserveRepository
 import org.example.animalhospital.repository.UserRepository
@@ -58,8 +59,12 @@ class ReserveService(
 
         val reservation = reserveRepository.findById(request.reserveId!!)
             .orElseThrow { NotFoundException("잘못된 예약번호 입니다.") }
+
+        if (reservation.status != ReserveStatus.RESERVED) {
+            throw BadRequestException("예약을 변경할 수 없습니다.")
+        }
         reservation.reserveDate = request.reserveDate
-        return reservation
+        return reserveRepository.save(reservation)
     }
 
     @Transactional

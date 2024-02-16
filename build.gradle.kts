@@ -63,8 +63,8 @@ dependencies {
     implementation("com.github.iamport:iamport-rest-client-java:0.2.21")
 
     // Spring Batch
-    implementation("org.springframework.boot:spring-boot-starter-batch:3.2.2")
     implementation("org.springframework.batch:spring-batch-core:5.1.0")
+    implementation("org.springframework.boot:spring-boot-starter-batch:3.2.2")
     testImplementation("org.springframework.batch:spring-batch-test:4.3.3")
 }
 
