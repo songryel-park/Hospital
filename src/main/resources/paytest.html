@@ -11,16 +11,16 @@
 
         function requestPay() {
             IMP.request_pay({
-                pg: "kakaopay",
-                pay_method: "card",
-                merchant_uid: "ORD20180131-0000012",   // 주문번호
-                name: "노르웨이 회전 의자",
-                amount: 100,                         // 숫자 타입
-                buyer_email: "gildong@gmail.com",
-                buyer_name: "홍길동",
-                buyer_tel: "010-4242-4242",
-                buyer_addr: "서울특별시 강남구 신사동",
-                buyer_postcode: "01181"
+                pg: "kakaopay", // 등록한 PG사에 따라 변경
+                pay_method : 'card',
+                merchant_uid: "57008833-33004",
+                name : '카카오 1kg',
+                amount : 100,
+                buyer_email : 'Iamport@chai.finance',
+                buyer_name : '포트원 기술지원팀',
+                buyer_tel : '010-1234-5678',
+                buyer_addr : '서울특별시 강남구 삼성동',
+                buyer_postcode : '123-456'
             }, function (rsp) { // callback
                 console.log(JSON.stringify(rsp))
                 $.ajax({
