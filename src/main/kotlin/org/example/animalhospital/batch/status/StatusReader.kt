@@ -1,4 +1,4 @@
-package org.example.animalhospital.batch
+package org.example.animalhospital.batch.status
 
 import org.example.animalhospital.entity.Reserve
 import org.example.animalhospital.repository.ReserveRepository

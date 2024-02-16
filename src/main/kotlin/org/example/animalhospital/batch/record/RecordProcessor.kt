@@ -1,4 +1,4 @@
-package org.example.animalhospital.batch
+package org.example.animalhospital.batch.record
 
 import org.example.animalhospital.entity.Reserve
 import org.springframework.batch.item.ItemProcessor

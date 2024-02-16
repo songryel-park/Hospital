@@ -14,11 +14,13 @@ import java.time.LocalDateTime
 
 @Repository
 interface ReserveRepository: JpaRepository<Reserve, Long> {
+    override fun findAll(pageable: Pageable): Page<Reserve>
+    fun findReservationByUserId(pageable: Pageable, userId: Long): MutableList<Reserve>
+
+    fun findByReserveDateBefore(reserveDate: LocalDateTime): List<Reserve>
+    fun findByReserveDateBetween(start: LocalDateTime, end: LocalDateTime): List<Reserve>
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r FROM Reserve r WHERE r.reserveId = :reserveId")
     fun findByIdWithLock(@Param("reserveId") reserveId: Long): Reserve?
-    fun findByReserveDateBefore(reserveDate: LocalDateTime): List<Reserve>
-    fun findByReserveDateBetween(start: LocalDateTime, end: LocalDateTime): List<Reserve>
-    override fun findAll(pageable: Pageable): Page<Reserve>
-    fun findReservationByUserId(pageable: Pageable, userId: Long): MutableList<Reserve>
 }
