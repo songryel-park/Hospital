@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring
     username: root
-    password:
+    password: 1234
 
   # JPA 설정
   jpa:
