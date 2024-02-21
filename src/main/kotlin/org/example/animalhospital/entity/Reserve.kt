@@ -5,8 +5,6 @@ import jakarta.persistence.*
 import org.example.animalhospital.entity.dto.ReserveRequest
 import org.example.animalhospital.entity.enums.ReserveStatus
 import org.example.animalhospital.exception.BadRequestException
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
 import java.time.LocalDateTime
 
 @Entity
@@ -16,13 +14,13 @@ class Reserve(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val reserveId: Long? = null,
 
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     val userId: Long,
 
-    @JoinColumn(name = "pet_id", nullable = false)
+    @JoinColumn(name = "pet_id")
     val petId: Long,
 
-    @Column(name = "disease", nullable = false)
+    @Column(name = "disease")
     val disease : String,
 
     @Column(name = "reserve_date")
@@ -39,6 +37,11 @@ class Reserve(
         if (this.status != ReserveStatus.RESERVED) {
             throw BadRequestException("결제를 취소할 수 없습니다.")
         }
-        this.status = ReserveStatus.CANCEL
+
+        if (LocalDateTime.now().isAfter(reserveDate)) {
+            this.status = ReserveStatus.CANCEL
+        } else {
+            throw BadRequestException("아직 예약 시간이 지나지 않았습니다.")
+        }
     }
 }
