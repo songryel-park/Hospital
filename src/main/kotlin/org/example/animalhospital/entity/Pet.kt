@@ -10,14 +10,14 @@ data class Pet(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val petId: Long? = null,
 
-    @JoinColumn(name = "user_id")
-    val userId: Long,
+    @JoinColumn(name = "user_name", nullable = false)
+    val username: String,
 
     @Column(name = "species", nullable = false)
     @Enumerated(EnumType.STRING)
     val species: Species,
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "pet_name", nullable = false)
     val name : String,
 
     @Column(name = "birth", nullable = false)

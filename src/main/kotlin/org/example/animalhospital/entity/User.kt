@@ -13,7 +13,7 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val userId: Long? = null,
 
-    @Column(name = "user_name", unique = true)
+    @Column(name = "username", unique = true)
     val username: String,
 
     @Column(name = "password")

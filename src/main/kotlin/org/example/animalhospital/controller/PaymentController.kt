@@ -20,7 +20,7 @@ class PaymentController(private val paymentService: PaymentService) {
         return ResponseEntity("결제가 완료되었습니다.", HttpStatus.OK)
     }
 
-    @PostMapping("/payment/{paymentId}")
+    @PostMapping("/payment")
     fun refund(@PathVariable paymentId: String, @RequestBody request: PaymentRequest): ResponseEntity<String> {
         paymentService.refund(request)
         return ResponseEntity("환불처리 되었습니다.", HttpStatus.OK)

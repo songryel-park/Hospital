@@ -49,7 +49,7 @@ class ReserveController(private val reserveService: ReserveService) {
     }
 
     @PreAuthorize("hasAnyAuthority('CLIENT')")
-    @PutMapping("/reservation/{reservationId}")
+    @PutMapping("/reservation/{reserveId}")
     fun updateReservation(@AuthenticationPrincipal userId: Long, @PathVariable reserveId: Long,
                         @Valid @RequestBody request: ReserveRequest): ResponseEntity<String> {
         if (reserveId != request.reserveId!!) {
@@ -59,7 +59,7 @@ class ReserveController(private val reserveService: ReserveService) {
         return ResponseEntity("예약내용이 수정되었습니다", HttpStatus.OK)
     }
 
-    @DeleteMapping("/reservation/{reservationId}")
+    @DeleteMapping("/reservation/{reserveId}")
     fun cancelReservation(
         @AuthenticationPrincipal user: User,
         @PathVariable reserveId: Long
@@ -69,7 +69,7 @@ class ReserveController(private val reserveService: ReserveService) {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PatchMapping("/reservation/{reservationId}")
+    @PatchMapping("/reservation/{reserveId}")
     fun treatment(@AuthenticationPrincipal user: User, @PathVariable userId: Long,
                         @Valid @PathVariable request: ReserveRequest): ResponseEntity<ReserveRequest> {
         reserveService.complete(userId, request)

@@ -14,11 +14,11 @@ class Reserve(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val reserveId: Long? = null,
 
-    @JoinColumn(name = "user_id")
-    val userId: Long,
+    @JoinColumn(name = "user_name")
+    val username: String,
 
-    @JoinColumn(name = "pet_id")
-    val petId: Long,
+    @JoinColumn(name = "pet_name")
+    val petname: String,
 
     @Column(name = "disease")
     val disease : String,

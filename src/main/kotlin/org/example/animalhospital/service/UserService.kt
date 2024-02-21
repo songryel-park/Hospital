@@ -42,7 +42,7 @@ class UserService(
 
     fun registerPet(request: PetRequest): Pet {
         val pet = Pet(
-            userId = request.userId,
+            username = request.username,
             species = request.species,
             name = request.name,
             birth = request.birth,

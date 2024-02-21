@@ -7,10 +7,10 @@ import java.time.LocalDateTime
 
 data class ReserveRequest(
     var reserveId: Long?,
-    @JsonProperty("user_id")
-    var userId: Long,
+    @JsonProperty("user")
+    var username: String,
     @JsonProperty("pet")
-    var petId: Long,
+    var petname: String,
     var disease: String,
     var reserveDate: LocalDateTime,
     var createdAt: LocalDateTime,
@@ -22,8 +22,8 @@ data class ReserveRequest(
         fun fromEntity(reserve: Reserve): ReserveRequest {
             return ReserveRequest(
                 reserveId = reserve.reserveId,
-                userId = reserve.userId,
-                petId = reserve.petId,
+                username = reserve.username,
+                petname = reserve.petname,
                 disease = reserve.disease,
                 reserveDate = reserve.reserveDate,
                 createdAt = reserve.createdAt,

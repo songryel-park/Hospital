@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ReserveService(
     private val reserveRepository: ReserveRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) {
     fun findAll(pageable: Pageable): Page<Reserve> {
         val allReservation = reserveRepository.findAll(pageable)
@@ -41,8 +41,8 @@ class ReserveService(
         user.checkClientOrThrow()
 
         val reservation = Reserve(
-            userId = request.userId,
-            petId = request.petId,
+            username = request.username,
+            petname = request.petname,
             disease = request.disease,
             reserveDate = request.reserveDate,
             status = ReserveStatus.RESERVATION,

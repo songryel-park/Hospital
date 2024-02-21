@@ -1,10 +1,12 @@
 package org.example.animalhospital.entity.dto
 
-import org.example.animalhospital.entity.Pet
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.example.animalhospital.entity.User
 import org.example.animalhospital.entity.enums.Species
 
 data class PetRequest(
-    var userId: Long,
+    @JsonProperty("username")
+    var username: String,
     var species: Species,
     var name: String,
     var birth: String,
